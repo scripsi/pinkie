@@ -63,3 +63,7 @@ Finally, install and set up the Inky display, using Pimoroni's handy one-liner:
 ```shell
 curl https://get.pimoroni.com/inky | bash
 ```
+
+## Creating images
+
+Copy the palette file to `~/.config/GIMP/2.10/palettes`
