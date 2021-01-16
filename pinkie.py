@@ -16,7 +16,6 @@ Displaying the world in the Kitchen
 """)
 
 inky = Inky()
-inky.set_border(inky.WHITE)
 
 virus_img = Image.open("/home/pi/pinkie/virus.png")
 duck_img = Image.open("/home/pi/pinkie/duck.png")
