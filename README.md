@@ -58,11 +58,27 @@ sudo apt update
 sudo apt upgrade
 ```
 
-Finally, install and set up the Inky display, using Pimoroni's handy one-liner:
+Install and set up the Inky display, using Pimoroni's handy one-liner:
 
 ```shell
 curl https://get.pimoroni.com/inky | bash
 ```
+
+Install additional python packages:
+
+```shell
+sudo apt install python3-gpiozero python3-schedule python3-pandas
+```
+
+Fonts:
+
+font-amatic-sc
+font-fredoka-one
+font-source-sans-pro
+font-source-serif-pro
+font-caladea
+font-font-awesome
+font-intuitive
 
 ## Creating images
 

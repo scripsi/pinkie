@@ -24,7 +24,7 @@ button_b = Button(6)
 button_c = Button(16)
 button_d = Button(24)
 
-img = Image.open("/home/pi/pinkie/background.png")
+# img = Image.open("/home/pi/pinkie/background.png")
 draw = ImageDraw.Draw(img)
 
 virus_img = Image.open("/home/pi/pinkie/virus.png")
