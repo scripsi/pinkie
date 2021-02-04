@@ -26,6 +26,15 @@ fonts = ["fonts/Action_Man_Bold/Action_Man_Bold.ttf",
          "fonts/LondrinaSolid-Regular/LondrinaSolid-Regular.ttf",
          "fonts/RobotoSlab-Bold/RobotoSlab-Bold.ttf"]
 
+# colour schemes (background,foreground)
+colours = [(BLACK,WHITE),(BLACK,YELLOW),(BLACK,ORANGE),
+           (WHITE,BLACK),(WHITE,GREEN),(WHITE,BLUE),(WHITE,RED),
+           (GREEN,BLACK),(GREEN,WHITE),(GREEN,YELLOW),(GREEN,ORANGE),
+           (BLUE,WHITE),(BLUE,YELLOW),(BLUE,ORANGE),
+           (RED,WHITE),(RED,YELLOW),(RED,ORANGE),
+           (YELLOW,BLACK),(YELLOW,GREEN),(YELLOW,BLUE),(YELLOW,RED),
+           (ORANGE,BLACK),(ORANGE,GREEN),(ORANGE,BLUE),(ORANGE,RED)]
+
 quacks = ["I am a duck",
             "My legs!",
             "I like cheeeeeese",
@@ -72,13 +81,15 @@ def update_image():
     """
     quack = random.choice(quacks)
     font = random.choice(fonts)
+    bg,fg = random.choice(colours)
     print("Font is: ", font)
     print("Quack length is: ",len(quack))
 
     # img_draw.text((10,10), wrapped_quack, RED, display_font)
     fs,q = smoosh_text(quack, font, WIDTH * 0.8, HEIGHT * 0.8)
     output_font = ImageFont.truetype(font, fs)
-    img_draw.multiline_text((WIDTH/2,HEIGHT/2),q,fill=RED,font=output_font,anchor="mm",spacing=0,align="center")
+    img_draw.rectangle([0,0,WIDTH,HEIGHT],fill=bg)
+    img_draw.multiline_text((WIDTH/2,HEIGHT/2),q,fill=fg,font=output_font,anchor="mm",spacing=0,align="center")
 
 
 def smoosh_text(text, font_name, box_width, box_height):

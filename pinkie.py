@@ -6,7 +6,7 @@ import schedule
 from inky.inky_uc8159 import Inky
 from gpiozero import Button
 from signal import pause
-import screen_test
+import screen_default
 
 print("""PinKIE
 
@@ -23,19 +23,15 @@ button_d = Button(24)
 def show_image(image_to_show):
 
     if image_to_show == "test":
-        screen_test.update_image()
-        inky.set_image(screen_test.get_image())
+        screen_default.update_image()
+        inky.set_image(screen_default.get_image())
         inky.show()
-    else:
-        inky.clear()
 
-def show_test():
-    show_image("test")
+def show_default():
+    show_image("default")
 
-def show_clear():
-    show_image("clear")
 
-button_a.when_released = show_test
-button_b.when_released = show_clear
+button_a.when_released = show_default
+# button_b.when_released = show_clear
 
 pause()

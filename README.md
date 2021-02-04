@@ -70,16 +70,26 @@ Install additional python packages:
 sudo apt install python3-gpiozero python3-schedule python3-pandas
 ```
 
-Fonts:
+Update the python image library and dependencies:
 
-font-amatic-sc
-font-fredoka-one
-font-source-sans-pro
-font-source-serif-pro
-font-caladea
-font-font-awesome
-font-intuitive
+```shell
+sudo python3 -m pip install --upgrade Pillow
+sudo apt install libopenjp2-7
+```
 
 ## Creating images
 
 Copy the palette file to `~/.config/GIMP/2.10/palettes`
+
+legible colour schemes:
+
+```
+Background    Text
+Black         White,Yellow,Orange
+White         Black,Green,Blue,Red
+Green         Black,White,Yellow,Orange
+Blue          White,Yellow,Orange
+Red           White,Yellow,Orange
+Yellow        Black,Green,Blue,Red
+Orange        Black,Green,Blue,Red
+```
