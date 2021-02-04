@@ -23,17 +23,17 @@ button_d = Button(24)
 def show_image(image_to_show):
 
     if image_to_show == "test":
-        screen_test.update_image
-        inky.set_image(screen_test.get_image)
+        screen_test.update_image()
+        inky.set_image(screen_test.get_image())
         inky.show()
     else:
         inky.clear()
 
-def show_test:
-    show_image(test)
+def show_test():
+    show_image("test")
 
-def show_clear:
-    show_image(clear)
+def show_clear():
+    show_image("clear")
 
 button_a.when_released = show_test
 button_b.when_released = show_clear
