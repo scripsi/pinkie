@@ -22,7 +22,7 @@ button_d = Button(24)
 
 def show_image(image_to_show):
 
-    if image_to_show == "test":
+    if image_to_show == "default":
         screen_default.update_image()
         inky.set_image(screen_default.get_image())
         inky.show()
