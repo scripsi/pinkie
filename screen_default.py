@@ -2,6 +2,7 @@
 from PIL import Image,ImageDraw,ImageFont
 import random
 import math
+from itertools import cycle
 
 BLACK = 0
 WHITE = 1
@@ -34,6 +35,8 @@ colours = [(BLACK,WHITE),(BLACK,YELLOW),(BLACK,ORANGE),
            (RED,WHITE),(RED,YELLOW),(RED,ORANGE),
            (YELLOW,BLACK),(YELLOW,GREEN),(YELLOW,BLUE),(YELLOW,RED),
            (ORANGE,BLACK),(ORANGE,GREEN),(ORANGE,BLUE),(ORANGE,RED)]
+
+rainbow = [RED,ORANGE,YELLOW,GREEN,BLUE]
 
 quacks = ["I am a duck",
             "My legs!",
@@ -79,13 +82,19 @@ def get_image():
 def update_image():
     """Updates the image in preparation for display
     """
-    quack = random.choice(quacks)
-    font = random.choice(fonts)
-    bg,fg = random.choice(colours)
+    quack = "Make it Rainbow"
+    font = "fonts/Pacifico-Regular/Pacifico-Regular.ttf"
+    bg,fg = (RED,WHITE)
+    rb = cycle(rainbow)
 
     fs,q = smoosh_text(quack, font, WIDTH * 0.8, HEIGHT * 0.8)
     output_font = ImageFont.truetype(font, fs)
     img_draw.rectangle([0,0,WIDTH,HEIGHT],fill=bg)
+    x = WIDTH/2
+    y = HEIGHT/2
+    r_max = WIDTH
+    for r in range(r_max,0,-10):
+        img_draw.ellipse([x-r,y-r,x+r,y+r],fill=next(rb))
     img_draw.multiline_text((WIDTH/2,HEIGHT/2),q,fill=fg,font=output_font,anchor="mm",spacing=0,align="center")
 
 
