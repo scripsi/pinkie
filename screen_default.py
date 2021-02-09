@@ -82,8 +82,8 @@ def get_image():
 def update_image():
     """Updates the image in preparation for display
     """
-    quack = "Make it Rainbow"
-    font = "fonts/Pacifico-Regular/Pacifico-Regular.ttf"
+    quack = "Deploy Rainbows"
+    font = "fonts/FredokaOne-Regular/FredokaOne-Regular.ttf"
     bg,fg = (RED,WHITE)
     rb = cycle(rainbow)
 
@@ -95,7 +95,7 @@ def update_image():
     r_max = WIDTH
     for r in range(r_max,0,-10):
         img_draw.ellipse([x-r,y-r,x+r,y+r],fill=next(rb))
-    img_draw.multiline_text((WIDTH/2,HEIGHT/2),q,fill=fg,font=output_font,anchor="mm",spacing=0,align="center")
+    img_draw.multiline_text((WIDTH/2,HEIGHT/2),q,fill=fg,font=output_font,anchor="mm",spacing=0,align="center",stroke_width=5, stroke_fill=BLACK)
 
 
 def smoosh_text(text, font_name, box_width, box_height):
