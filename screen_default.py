@@ -82,10 +82,7 @@ def update_image():
     quack = random.choice(quacks)
     font = random.choice(fonts)
     bg,fg = random.choice(colours)
-    print("Font is: ", font)
-    print("Quack length is: ",len(quack))
 
-    # img_draw.text((10,10), wrapped_quack, RED, display_font)
     fs,q = smoosh_text(quack, font, WIDTH * 0.8, HEIGHT * 0.8)
     output_font = ImageFont.truetype(font, fs)
     img_draw.rectangle([0,0,WIDTH,HEIGHT],fill=bg)
@@ -93,7 +90,7 @@ def update_image():
 
 
 def smoosh_text(text, font_name, box_width, box_height):
-    """Wraps, centres and fills a text string to fit a rectangular image area
+    """Wraps, centres and shrinks a text string to fit a rectangular image area
     """
     # Create a font instance for testing, at size 100
     test_font = ImageFont.truetype(font_name, 100)
