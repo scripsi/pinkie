@@ -77,6 +77,38 @@ sudo python3 -m pip install --upgrade Pillow
 sudo apt install libopenjp2-7
 ```
 
+## Creating the service
+
+Create a file as `/etc/systemd/system/pinkie.service` containing the following:
+
+```ini
+[Unit]
+Description=Pinkie
+After=network.target
+
+[Service]
+ExecStart=/usr/bin/python3 -u pinkie.py
+WorkingDirectory=/home/pi/pinkie
+Restart=always
+User=pi
+
+[Install]
+WantedBy=multi-user.target
+```
+
+Then enable it to run at startup:
+
+```shell
+sudo systemctl enable pinkie.service
+```
+
+To control the service you can use the following commands:
+
+```shell
+sudo systemctl stop pinkie.service
+sudo systemctl start pinkie.service
+```
+
 ## Creating images
 
 Copy the palette file to `~/.config/GIMP/2.10/palettes`

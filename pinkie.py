@@ -32,6 +32,9 @@ def show_default():
 
 
 button_a.when_released = show_default
-# button_b.when_released = show_clear
+button_b.when_released = show_default
+button_c.when_released = show_default
+button_d.when_released = show_default
 
+show_image("default")
 pause()
