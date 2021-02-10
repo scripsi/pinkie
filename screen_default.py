@@ -15,6 +15,9 @@ CLEAN = 7
 WIDTH = 600
 HEIGHT = 448
 
+LEADING = 2
+MARGIN = 20
+
 img = Image.new(mode='P',size=(WIDTH,HEIGHT), color=WHITE)
 img_draw = ImageDraw.Draw(img)
 
@@ -83,10 +86,14 @@ def update_image():
     font = random.choice(fonts)
     bg,fg = random.choice(colours)
 
-    fs,q = smoosh_text(quack, font, WIDTH * 0.8, HEIGHT * 0.8)
+    fs,q = smoosh_text(quack, font, WIDTH - (MARGIN * 2), HEIGHT - (MARGIN * 2))
     output_font = ImageFont.truetype(font, fs)
+
+    ax, ay, bx, by = img_draw.multiline_textbbox((0,0),q,font=output_font,align="center",spacing=LEADING)
+    x = ((WIDTH - (bx - ax)) / 2) - ax
+    y = ((HEIGHT - (by - ay)) / 2) - ay
     img_draw.rectangle([0,0,WIDTH,HEIGHT],fill=bg)
-    img_draw.multiline_text((WIDTH/2,HEIGHT/2),q,fill=fg,font=output_font,anchor="mm",spacing=0,align="center")
+    img_draw.multiline_text((x,y),q,fill=fg,font=output_font,spacing=LEADING,align="center")
 
 
 def smoosh_text(text, font_name, box_width, box_height):
@@ -100,7 +107,7 @@ def smoosh_text(text, font_name, box_width, box_height):
     # split the text into individual words
     words = text.split()
     # Find the biggest words
-    print("Word size optimisation ...")
+    # print("Word size optimisation ...")
     word_width_max = 0
     word_height_max = 0
     word_width_total = 0
@@ -115,40 +122,30 @@ def smoosh_text(text, font_name, box_width, box_height):
         if w_height > word_height_max:
             word_height_max = w_height
             tallest_word = w
-    print("Widest word is: ", widest_word)
-    print("Tallest word is: ", tallest_word)
+    # print("Widest word is: ", widest_word)
+    # print("Tallest word is: ", tallest_word)
 
     # Set the maximum font size so that the biggest words will fit
     font_size = math.floor((box_width / (word_width_max/100)))
     font_size = math.floor(min(font_size, (box_height / (word_height_max/100))))
-    print("First round font size is: ", font_size)
+    # print("First round font size is: ", font_size)
 
     # Now set the maximum font size so that the total area occupied by the text fits the area available
+    # print("Area optimisation ...")
     box_area = box_width * box_height
     unit_text_width = ((len(words)-1) * (space_width / 100)) + (word_width_total / 100)
-    print("Area optimisation ...")
-    unfitted = True
-    while unfitted:
-        # Keep reducing font size until the text area is less than the box area
-        print("Trying font size: ", font_size, "...")
-        line_height = (word_height_max / 100) * font_size
-        text_width = unit_text_width * font_size
-        text_area = text_width * line_height
-        if text_area < box_area:
-            print("It fits!")
-            unfitted = False
-        else:
-            print("Too big.")
-            font_size -= 1
-    print("Second round font size is: ", font_size)
+    unit_line_height = word_height_max / 100
+    unit_text_area = unit_text_width * unit_line_height
+    font_size = math.floor(min(font_size,math.sqrt(box_area / unit_text_area)))
+    # print("Second round font size is: ", font_size)
 
     # Finally, try and find the maximum font size where the text actually fits
-    print("Line length optimisation ...")
+    # print("Line length optimisation ...")
     unfitted = True
     lines = []
     while unfitted:
-        print("Trying font size: ", font_size, "...")
-        line_height = (word_height_max / 100) * font_size
+        # print("Trying font size: ", font_size, "...")
+        line_height = (unit_line_height * font_size) + LEADING
         display_font = ImageFont.truetype(font_name, font_size)
         lines.clear()
         line = ''
@@ -166,16 +163,16 @@ def smoosh_text(text, font_name, box_width, box_height):
                 line = l
         if line != '':
             lines.append(line)
-
-        if (len(lines) * line_height) > box_height:
-            print("Too big.")
+        ax, ay, bx, by = img_draw.multiline_textbbox((0,0),"\n".join(lines),font=display_font,align="center",spacing=LEADING)
+        if by - ay > box_height:
+            # print("Too big.")
             font_size -= 1
         else:
-            print("It fits!")
+            # print("It fits!")
             unfitted = False
 
-    print("Third round font size is: ", font_size)
-    for l in lines:
-        print(l)
+    # print("Third round font size is: ", font_size)
+    # for l in lines:
+    #   print(l)
 
     return font_size, "\n".join(lines)
