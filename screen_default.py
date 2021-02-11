@@ -2,6 +2,8 @@
 from PIL import Image,ImageDraw,ImageFont
 import random
 import math
+import imaplib
+import email
 
 BLACK = 0
 WHITE = 1
@@ -36,9 +38,11 @@ colours = [(BLACK,WHITE),(BLACK,YELLOW),(BLACK,ORANGE),
            (BLUE,WHITE),(BLUE,YELLOW),(BLUE,ORANGE),
            (RED,WHITE),(RED,YELLOW),(RED,ORANGE),
            (YELLOW,BLACK),(YELLOW,GREEN),(YELLOW,BLUE),(YELLOW,RED),
-           (ORANGE,BLACK),(ORANGE,GREEN),(ORANGE,BLUE),(ORANGE,RED)]
+           (ORANGE,BLACK),(ORANGE,BLUE),(ORANGE,RED)]
 
-quacks = ["I am a duck",
+quacks = []
+
+old_quacks = ["I am a duck",
             "My legs!",
             "I like cheeeeeese",
             "Don't poke it",
@@ -72,6 +76,33 @@ quacks = ["I am a duck",
             "Non Punctate",
             "The FitnessGram Pacer Test is a multistage aerobic capacity test that progressively gets more difficult as it continues. The 20-meter pacer test will begin in 30 seconds. Line up at the start. The running speed starts slowly, but gets faster each minute after you hear the signal. A single lap should be completed each time you hear the sound. Remember to run in a straight line, and run as long as possible. The second time you fail to complete a lap before the sound, your test is over. The test will begin on the word start. On your mark, get ready, start."]
 
+
+def setup(server,user,password,allowlist):
+    """Initialises values
+    """
+    # establish imap connection
+    try:
+        imap = imaplib.IMAP4(server)
+        imap.login(user, password)
+        imap.select('Inbox',readonly=True)
+
+        # print("Downloading quacks ...")
+        for sender in allowlist.split(','):
+            response, msg_nums = imap.search(None, 'FROM', sender)
+            for msg_num in msg_nums[0].split():
+                response, msg_data = imap.fetch(msg_num, '(BODY.PEEK[HEADER])')
+                msg = email.message_from_bytes(msg_data[0][1])
+                # msg_sender_name, msg_sender_email = email.utils.parseaddr(msg['From'])
+                # The following line removes newlines (\r\n) sometimes present in long subjects
+                q = ''.join(msg['Subject'].splitlines())
+                quacks.append(q)
+        imap.close()
+        imap.logout()
+        # print("... completed")
+    except:
+        quacks.append("No Quacks")
+
+    # print(quacks)
 
 def get_image():
     """Returns an image to be displayed on the screen

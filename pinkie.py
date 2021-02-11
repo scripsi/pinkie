@@ -3,10 +3,13 @@
 # import lots of necessary stuff
 import PIL
 import schedule
+import time
 from inky.inky_uc8159 import Inky
 from gpiozero import Button
 from signal import pause
 import screen_default
+import os
+from configparser import ConfigParser
 
 print("""PinKIE
 
@@ -19,6 +22,10 @@ button_a = Button(5)
 button_b = Button(6)
 button_c = Button(16)
 button_d = Button(24)
+
+ini_file = os.path.expanduser("~") + "/pinkie.ini"
+config = ConfigParser()
+config.read(ini_file)
 
 def show_image(image_to_show):
 
@@ -36,5 +43,13 @@ button_b.when_released = show_default
 button_c.when_released = show_default
 button_d.when_released = show_default
 
-show_image("default")
-pause()
+screen_default.setup(server=config['iamaduck']['server'],
+                     user=config['iamaduck']['user'],
+                     password=config['iamaduck']['password'],
+                     allowlist=config['iamaduck']['allowlist'])
+show_default()
+schedule.every().hour().at(":01").do(show_default)
+
+while True:
+    schedule.run_pending()
+    time.sleep(1)
