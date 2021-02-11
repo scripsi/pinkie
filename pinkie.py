@@ -48,7 +48,7 @@ screen_default.setup(server=config['iamaduck']['server'],
                      password=config['iamaduck']['password'],
                      allowlist=config['iamaduck']['allowlist'])
 show_default()
-schedule.every().hour().at(":01").do(show_default)
+schedule.every().hour.at(":01").do(show_default)
 
 while True:
     schedule.run_pending()
