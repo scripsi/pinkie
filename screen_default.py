@@ -20,6 +20,9 @@ HEIGHT = 448
 LEADING = 2
 MARGIN = 20
 
+REFRESH_INTERVAL=10
+UPDATE_INTERVAL=60
+
 img = Image.new(mode='P',size=(WIDTH,HEIGHT), color=WHITE)
 img_draw = ImageDraw.Draw(img)
 
@@ -42,46 +45,12 @@ colours = [(BLACK,WHITE),(BLACK,YELLOW),(BLACK,ORANGE),
 
 quacks = []
 
-old_quacks = ["I am a duck",
-            "My legs!",
-            "I like cheeeeeese",
-            "Don't poke it",
-            "Yeee ... Ha",
-            "I have a joke for you ...",
-            "We need to talk about Kevin",
-            "Orbs of joy!",
-            "Niffleheim",
-            "Mind go poof!",
-            "Mental Mind",
-            "I'm a bin, drop your litter in",
-            "Change it! Change it!",
-            "I don't like it",
-            "Hello, I am Hugiboo, leader of de hugiboos",
-            "Grrrrazieeeee",
-            "Umbagol, umbagol, protects you from the wind and snow, umbagol, umbagol, this is the umbagol ... motto",
-            "The playground of depression",
-            "DINNER TIME!!!",
-            "Wuv ooo",
-            "Knock Knock, Maud, time to wake up",
-            "This is Lee. He is a pea. All of his friends are peas. Except Colin. Colin isn't a pea",
-            "Pink fluffy unicorns dancing on rainbows",
-            "Buy AFTER THE RUIN!",
-            "Okay ... so ... basically ... ",
-            "That's because I use multitouch",
-            "I am the DREAMCRUSHER",
-            "Buy Beef Dinners",
-            "Psycheeeee and Woooofus",
-            "You are so small, I did not see you there ... should have gone to Specsavers",
-            "Risk it for a biscuit",
-            "Non Punctate",
-            "The FitnessGram Pacer Test is a multistage aerobic capacity test that progressively gets more difficult as it continues. The 20-meter pacer test will begin in 30 seconds. Line up at the start. The running speed starts slowly, but gets faster each minute after you hear the signal. A single lap should be completed each time you hear the sound. Remember to run in a straight line, and run as long as possible. The second time you fail to complete a lap before the sound, your test is over. The test will begin on the word start. On your mark, get ready, start."]
-
-
 def setup(server,user,password,allowlist):
     """Initialises values
     """
-    # establish imap connection
+
     try:
+        # establish imap connection
         imap = imaplib.IMAP4(server)
         imap.login(user, password)
         imap.select('Inbox',readonly=True)
@@ -91,7 +60,7 @@ def setup(server,user,password,allowlist):
             response, msg_nums = imap.search(None, 'FROM', sender)
             for msg_num in msg_nums[0].split():
                 response, msg_data = imap.fetch(msg_num, '(BODY.PEEK[HEADER])')
-                msg = email.message_from_bytes(msg_data[0][1])
+                msg = email.message_from_bytes(msg_data[0][1],policy=email.policy.default)
                 # msg_sender_name, msg_sender_email = email.utils.parseaddr(msg['From'])
                 # The following line removes newlines (\r\n) sometimes present in long subjects
                 q = ''.join(msg['Subject'].splitlines())
