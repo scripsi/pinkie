@@ -4,6 +4,7 @@ import random
 import math
 import imaplib
 import email
+from email import policy
 
 BLACK = 0
 WHITE = 1
@@ -26,22 +27,27 @@ UPDATE_INTERVAL=60
 img = Image.new(mode='P',size=(WIDTH,HEIGHT), color=WHITE)
 img_draw = ImageDraw.Draw(img)
 
-fonts = ["fonts/Action_Man_Bold/Action_Man_Bold.ttf",
-         "fonts/FredokaOne-Regular/FredokaOne-Regular.ttf",
-         "fonts/Lobster-Regular/Lobster-Regular.ttf",
-         "fonts/Pacifico-Regular/Pacifico-Regular.ttf",
-         "fonts/SpecialElite-Regular/SpecialElite-Regular.ttf",
-         "fonts/LondrinaSolid-Regular/LondrinaSolid-Regular.ttf",
-         "fonts/RobotoSlab-Bold/RobotoSlab-Bold.ttf"]
+fonts = ["fonts/Action_Man/Action_Man_Bold.ttf",
+         "fonts/ArchitectsDaughter/ArchitectsDaughter-Regular.ttf",
+         "fonts/FredokaOne/FredokaOne-Regular.ttf",
+         "fonts/Lobster/Lobster-Regular.ttf",
+         "fonts/LondrinaSolid/LondrinaSolid-Regular.ttf",
+         "fonts/Merriweather/Merriweather-Regular.ttf",
+         "fonts/Pacifico/Pacifico-Regular.ttf",
+         "fonts/Pacifico/Pacifico-Regular.ttf",
+         "fonts/RobotoSlab/RobotoSlab-Bold.ttf",
+         "fonts/SpecialElite/SpecialElite-Regular.ttf",
+         "fonts/StalinistOne/StalinistOne-Regular.ttf",
+         "fonts/Ultra/Ultra-Regular.ttf"]
 
 # colour schemes (background,foreground)
 colours = [(BLACK,WHITE),(BLACK,YELLOW),(BLACK,ORANGE),
            (WHITE,BLACK),(WHITE,GREEN),(WHITE,BLUE),(WHITE,RED),
-           (GREEN,BLACK),(GREEN,WHITE),(GREEN,YELLOW),(GREEN,ORANGE),
+           (GREEN,BLACK),(GREEN,WHITE),(GREEN,YELLOW),
            (BLUE,WHITE),(BLUE,YELLOW),(BLUE,ORANGE),
            (RED,WHITE),(RED,YELLOW),(RED,ORANGE),
            (YELLOW,BLACK),(YELLOW,GREEN),(YELLOW,BLUE),(YELLOW,RED),
-           (ORANGE,BLACK),(ORANGE,BLUE),(ORANGE,RED)]
+           (ORANGE,BLACK),(ORANGE,BLUE)]
 
 quacks = []
 
@@ -60,7 +66,7 @@ def setup(server,user,password,allowlist):
             response, msg_nums = imap.search(None, 'FROM', sender)
             for msg_num in msg_nums[0].split():
                 response, msg_data = imap.fetch(msg_num, '(BODY.PEEK[HEADER])')
-                msg = email.message_from_bytes(msg_data[0][1],policy=email.policy.default)
+                msg = email.message_from_bytes(msg_data[0][1],policy=policy.default)
                 # msg_sender_name, msg_sender_email = email.utils.parseaddr(msg['From'])
                 # The following line removes newlines (\r\n) sometimes present in long subjects
                 q = ''.join(msg['Subject'].splitlines())
@@ -82,6 +88,7 @@ def get_image():
 def update_image():
     """Updates the image in preparation for display
     """
+
     quack = random.choice(quacks)
     font = random.choice(fonts)
     bg,fg = random.choice(colours)

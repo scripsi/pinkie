@@ -1,0 +1,7 @@
+[default]
+
+[iamaduck]
+  server=imap.isp.co.uk
+  user=joe@bloggs.com
+  password=pAsSwOrD
+  allowlist=joe@bloggs.com,jane@bloggs.com,joebloggs1234@gmail.com
