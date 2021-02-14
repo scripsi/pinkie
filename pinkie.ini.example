@@ -1,7 +1,15 @@
 [default]
 
-[iamaduck]
-  server=imap.isp.co.uk
-  user=joe@bloggs.com
-  password=pAsSwOrD
-  allowlist=joe@bloggs.com,jane@bloggs.com,joebloggs1234@gmail.com
+[screen_default]
+  email_server=imap.isp.co.uk
+  email_user=joe@bloggs.com
+  email_password=pAsSwOrD
+  email_allowlist=joe@bloggs.com,jane@bloggs.com,joebloggs1234@gmail.com
+
+[screen_a]
+
+[screen_b]
+
+[screen_c]
+
+[screen_d]
