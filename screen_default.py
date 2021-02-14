@@ -1,4 +1,5 @@
 # import lots of necessary stuff
+import config
 from PIL import Image,ImageDraw,ImageFont
 import random
 import math
@@ -6,25 +7,13 @@ import imaplib
 import email
 from email import policy
 
-BLACK = 0
-WHITE = 1
-GREEN = 2
-BLUE = 3
-RED = 4
-YELLOW = 5
-ORANGE = 6
-CLEAN = 7
-
-WIDTH = 600
-HEIGHT = 448
-
 LEADING = 2
 MARGIN = 20
 
 REFRESH_INTERVAL=10
 UPDATE_INTERVAL=60
 
-img = Image.new(mode='P',size=(WIDTH,HEIGHT), color=WHITE)
+img = Image.new(mode='P',size=(config.WIDTH,config.HEIGHT), color=config.WHITE)
 img_draw = ImageDraw.Draw(img)
 
 fonts = ["fonts/Action_Man/Action_Man_Bold.ttf",
@@ -41,28 +30,29 @@ fonts = ["fonts/Action_Man/Action_Man_Bold.ttf",
          "fonts/Ultra/Ultra-Regular.ttf"]
 
 # colour schemes (background,foreground)
-colours = [(BLACK,WHITE),(BLACK,YELLOW),(BLACK,ORANGE),
-           (WHITE,BLACK),(WHITE,GREEN),(WHITE,BLUE),(WHITE,RED),
-           (GREEN,BLACK),(GREEN,WHITE),(GREEN,YELLOW),
-           (BLUE,WHITE),(BLUE,YELLOW),(BLUE,ORANGE),
-           (RED,WHITE),(RED,YELLOW),(RED,ORANGE),
-           (YELLOW,BLACK),(YELLOW,GREEN),(YELLOW,BLUE),(YELLOW,RED),
-           (ORANGE,BLACK),(ORANGE,BLUE)]
+colours = [(config.BLACK,config.WHITE),(config.BLACK,config.YELLOW),(config.BLACK,config.ORANGE),
+           (config.WHITE,config.BLACK),(config.WHITE,config.GREEN),(config.WHITE,config.BLUE),(config.WHITE,config.RED),
+           (config.GREEN,config.BLACK),(config.GREEN,config.WHITE),(config.GREEN,config.YELLOW),
+           (config.BLUE,config.WHITE),(config.BLUE,config.YELLOW),(config.BLUE,config.ORANGE),
+           (config.RED,config.WHITE),(config.RED,config.YELLOW),(config.RED,config.ORANGE),
+           (config.YELLOW,config.BLACK),(config.YELLOW,config.GREEN),(config.YELLOW,config.BLUE),(config.YELLOW,config.RED),
+           (config.ORANGE,config.BLACK),(config.ORANGE,config.BLUE)]
 
 quacks = []
 
-def setup(server,user,password,allowlist):
+def setup():
     """Initialises values
     """
 
     try:
         # establish imap connection
-        imap = imaplib.IMAP4(server)
-        imap.login(user, password)
+        imap = imaplib.IMAP4(config.ini['screen_default']['server'])
+        imap.login(config.ini['screen_default']['user'],
+                   config.ini['screen_default']['password'])
         imap.select('Inbox',readonly=True)
 
         # print("Downloading quacks ...")
-        for sender in allowlist.split(','):
+        for sender in config.ini['screen_default']['allowlist'].split(','):
             response, msg_nums = imap.search(None, 'FROM', sender)
             for msg_num in msg_nums[0].split():
                 response, msg_data = imap.fetch(msg_num, '(BODY.PEEK[HEADER])')
@@ -93,13 +83,13 @@ def update_image():
     font = random.choice(fonts)
     bg,fg = random.choice(colours)
 
-    fs,q = smoosh_text(quack, font, WIDTH - (MARGIN * 2), HEIGHT - (MARGIN * 2))
+    fs,q = smoosh_text(quack, font, config.WIDTH - (MARGIN * 2), config.HEIGHT - (MARGIN * 2))
     output_font = ImageFont.truetype(font, fs)
 
     ax, ay, bx, by = img_draw.multiline_textbbox((0,0),q,font=output_font,align="center",spacing=LEADING)
-    x = ((WIDTH - (bx - ax)) / 2) - ax
-    y = ((HEIGHT - (by - ay)) / 2) - ay
-    img_draw.rectangle([0,0,WIDTH,HEIGHT],fill=bg)
+    x = ((config.WIDTH - (bx - ax)) / 2) - ax
+    y = ((config.HEIGHT - (by - ay)) / 2) - ay
+    img_draw.rectangle([0,0,config.WIDTH,config.HEIGHT],fill=bg)
     img_draw.multiline_text((x,y),q,fill=fg,font=output_font,spacing=LEADING,align="center")
 
 

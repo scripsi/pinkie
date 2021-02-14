@@ -2,6 +2,7 @@
 
 # import lots of necessary stuff
 import PIL
+import config
 import schedule
 import time
 from inky.inky_uc8159 import Inky
@@ -23,9 +24,7 @@ button_b = Button(6)
 button_c = Button(16)
 button_d = Button(24)
 
-ini_file = os.path.expanduser("~") + "/pinkie.ini"
-config = ConfigParser()
-config.read(ini_file)
+
 
 def show_image(image_to_show):
 
@@ -43,12 +42,10 @@ button_b.when_released = show_default
 button_c.when_released = show_default
 button_d.when_released = show_default
 
-screen_default.setup(server=config['iamaduck']['server'],
-                     user=config['iamaduck']['user'],
-                     password=config['iamaduck']['password'],
-                     allowlist=config['iamaduck']['allowlist'])
+config.setup()
+screen_default.setup()
 show_default()
-schedule.every(5).minutes.do(show_default)
+schedule.every(config.ini['screen_default']['refresh_interval']).minutes.do(show_default)
 
 while True:
     schedule.run_pending()
