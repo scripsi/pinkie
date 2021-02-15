@@ -10,21 +10,22 @@ from email import policy
 LEADING = 2
 MARGIN = 20
 
-REFRESH_INTERVAL=10
-UPDATE_INTERVAL=60
-
 img = Image.new(mode='P',size=(config.WIDTH,config.HEIGHT), color=config.WHITE)
 img_draw = ImageDraw.Draw(img)
 
 fonts = ["fonts/Action_Man/Action_Man_Bold.ttf",
          "fonts/ArchitectsDaughter/ArchitectsDaughter-Regular.ttf",
+         "fonts/Bangers/Bangers-Regular.ttf",
          "fonts/FredokaOne/FredokaOne-Regular.ttf",
+         "fonts/HachiMaruPop/HachiMaruPop-Regular.ttf",
          "fonts/Lobster/Lobster-Regular.ttf",
          "fonts/LondrinaSolid/LondrinaSolid-Regular.ttf",
+         "fonts/Merienda/Merienda-Regular.ttf",
          "fonts/Merriweather/Merriweather-Regular.ttf",
          "fonts/Pacifico/Pacifico-Regular.ttf",
-         "fonts/Pacifico/Pacifico-Regular.ttf",
+         "fonts/Ranchers/Ranchers-Regular.ttf",
          "fonts/RobotoSlab/RobotoSlab-Bold.ttf",
+         "fonts/RockSalt/RockSalt-Regular.ttf",
          "fonts/SpecialElite/SpecialElite-Regular.ttf",
          "fonts/StalinistOne/StalinistOne-Regular.ttf",
          "fonts/Ultra/Ultra-Regular.ttf"]
@@ -32,9 +33,9 @@ fonts = ["fonts/Action_Man/Action_Man_Bold.ttf",
 # colour schemes (background,foreground)
 colours = [(config.BLACK,config.WHITE),(config.BLACK,config.YELLOW),(config.BLACK,config.ORANGE),
            (config.WHITE,config.BLACK),(config.WHITE,config.GREEN),(config.WHITE,config.BLUE),(config.WHITE,config.RED),
-           (config.GREEN,config.BLACK),(config.GREEN,config.WHITE),(config.GREEN,config.YELLOW),
+           (config.GREEN,config.WHITE),(config.GREEN,config.YELLOW),
            (config.BLUE,config.WHITE),(config.BLUE,config.YELLOW),(config.BLUE,config.ORANGE),
-           (config.RED,config.WHITE),(config.RED,config.YELLOW),(config.RED,config.ORANGE),
+           (config.RED,config.WHITE),(config.RED,config.YELLOW),
            (config.YELLOW,config.BLACK),(config.YELLOW,config.GREEN),(config.YELLOW,config.BLUE),(config.YELLOW,config.RED),
            (config.ORANGE,config.BLACK),(config.ORANGE,config.BLUE)]
 
