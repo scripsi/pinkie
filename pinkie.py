@@ -45,7 +45,7 @@ button_d.when_released = show_default
 config.setup()
 screen_default.setup()
 show_default()
-schedule.every(config.ini['screen_default']['refresh_interval']).minutes.do(show_default)
+schedule.every(int(config.ini['screen_default']['refresh_interval'])).minutes.do(show_default)
 
 while True:
     schedule.run_pending()
