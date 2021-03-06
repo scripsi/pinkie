@@ -6,6 +6,7 @@ import math
 import imaplib
 import email
 from email import policy
+import itertools
 
 LEADING = 2
 MARGIN = 20
@@ -16,6 +17,7 @@ img_draw = ImageDraw.Draw(img)
 fonts = ["fonts/Action_Man/Action_Man_Bold.ttf",
          "fonts/ArchitectsDaughter/ArchitectsDaughter-Regular.ttf",
          "fonts/Bangers/Bangers-Regular.ttf",
+         "fonts/ComicNeue/ComicNeue-Bold.ttf",
          "fonts/FredokaOne/FredokaOne-Regular.ttf",
          "fonts/HachiMaruPop/HachiMaruPop-Regular.ttf",
          "fonts/Lobster/Lobster-Regular.ttf",
@@ -31,13 +33,52 @@ fonts = ["fonts/Action_Man/Action_Man_Bold.ttf",
          "fonts/Ultra/Ultra-Regular.ttf"]
 
 # colour schemes (background,foreground)
-colours = [(config.BLACK,config.WHITE),(config.BLACK,config.YELLOW),(config.BLACK,config.ORANGE),
-           (config.WHITE,config.BLACK),(config.WHITE,config.GREEN),(config.WHITE,config.BLUE),(config.WHITE,config.RED),
-           (config.GREEN,config.WHITE),(config.GREEN,config.YELLOW),
-           (config.BLUE,config.WHITE),(config.BLUE,config.YELLOW),(config.BLUE,config.ORANGE),
-           (config.RED,config.WHITE),(config.RED,config.YELLOW),
-           (config.YELLOW,config.BLACK),(config.YELLOW,config.GREEN),(config.YELLOW,config.BLUE),(config.YELLOW,config.RED),
-           (config.ORANGE,config.BLACK),(config.ORANGE,config.BLUE)]
+colours = [(config.BLACK,config.WHITE,"White on Black"),
+           (config.BLACK,config.YELLOW,"Yellow on Black"),
+           (config.BLACK,config.ORANGE,"Orange on Black"),
+           (config.BLACK,config.GREEN,"Green on Black"),
+           (config.BLACK,config.BLUE,"Blue on Black"),
+           (config.BLACK,config.RED,"Red on Black"),
+           (config.WHITE,config.BLACK,"Black on White"),
+           (config.WHITE,config.GREEN,"Green on White"),
+           (config.WHITE,config.BLUE,"Blue on White"),
+           (config.WHITE,config.RED,"Red on White"),
+           (config.WHITE,config.YELLOW,"Yellow on White"),
+           (config.WHITE,config.ORANGE,"Orange on White"),
+           (config.GREEN,config.WHITE,"White on Green"),
+           (config.GREEN,config.YELLOW,"Yellow on Green"),
+           (config.GREEN,config.ORANGE,"Orange on Green"),
+           (config.GREEN,config.RED,"Red on Green"),
+           (config.GREEN,config.BLUE,"Blue on Green"),
+           (config.GREEN,config.BLACK,"Black on Green"),
+           (config.BLUE,config.WHITE,"White on Blue"),
+           (config.BLUE,config.YELLOW,"Yellow on Blue"),
+           (config.BLUE,config.ORANGE,"Orange on Blue"),
+           (config.BLUE,config.RED,"Red on Blue"),
+           (config.BLUE,config.GREEN,"Green on Blue"),
+           (config.BLUE,config.BLACK,"Black on Blue"),
+           (config.RED,config.WHITE,"White on Red"),
+           (config.RED,config.YELLOW,"Yellow on Red"),
+           (config.RED,config.ORANGE,"Orange on Red"),
+           (config.RED,config.GREEN,"Green on Red"),
+           (config.RED,config.BLUE,"Blue on Red"),
+           (config.RED,config.BLACK,"Black on Red"),
+           (config.YELLOW,config.BLACK,"Black on Yellow"),
+           (config.YELLOW,config.GREEN,"Green on Yellow"),
+           (config.YELLOW,config.BLUE,"Blue on Yellow"),
+           (config.YELLOW,config.RED,"Red on Yellow"),
+           (config.YELLOW,config.ORANGE,"Orange on Yellow"),
+           (config.YELLOW,config.WHITE,"White on Yellow"),
+           (config.ORANGE,config.BLACK,"Black on Orange"),
+           (config.ORANGE,config.WHITE,"White on Orange"),
+           (config.ORANGE,config.RED,"Red on Orange"),
+           (config.ORANGE,config.YELLOW,"Yellow on Orange"),
+           (config.ORANGE,config.GREEN,"Green on Orange"),
+           (config.ORANGE,config.BLUE,"Blue on Orange")]
+
+colours_iter = itertools.cycle(colours)
+
+last_colours = ""
 
 quacks = []
 
@@ -82,16 +123,22 @@ def update_image():
 
     quack = random.choice(quacks)
     font = random.choice(fonts)
-    bg,fg = random.choice(colours)
+    bg,fg,colours_name = next(colours_iter)
 
-    fs,q = smoosh_text(quack, font, config.WIDTH - (MARGIN * 2), config.HEIGHT - (MARGIN * 2))
+    fs,q = smoosh_text(quack, font, config.WIDTH - (MARGIN * 2), config.HEIGHT - 20 - (MARGIN * 2))
     output_font = ImageFont.truetype(font, fs)
+
+    info_text = colours_name + " after " + last_colours
+    last_colours = colours_name
+    info_font = ImageFont.truetype("fonts/FredokaOne/FredokaOne-Regular.ttf",18)
+    img_draw.rectangle([0,0,config.WIDTH,20],fill=config.WHITE)
+    img_draw.text([1,1],info_text,font=info_font,fill=config.BLACK)
 
     ax, ay, bx, by = img_draw.multiline_textbbox((0,0),q,font=output_font,align="center",spacing=LEADING)
     x = ((config.WIDTH - (bx - ax)) / 2) - ax
     y = ((config.HEIGHT - (by - ay)) / 2) - ay
-    img_draw.rectangle([0,0,config.WIDTH,config.HEIGHT],fill=bg)
-    img_draw.multiline_text((x,y),q,fill=fg,font=output_font,spacing=LEADING,align="center")
+    img_draw.rectangle([0,20,config.WIDTH,config.HEIGHT-20],fill=bg)
+    img_draw.multiline_text((x,y + 20),q,fill=fg,font=output_font,spacing=LEADING,align="center")
 
 
 def smoosh_text(text, font_name, box_width, box_height):
