@@ -2,16 +2,17 @@
 
 # import lots of necessary stuff
 import PIL
-import screen_default
+import screen_test
 import config
 
 
 config.setup()
-screen_default.setup()
+screen_test.setup()
 
-screen_default.update_image()
+# screen_test.update_pattern()
+screen_test.update_blank(config.RED)
 
-output_img = screen_default.get_image()
+output_img = screen_test.get_image()
 
 output_img.putpalette(config.PALETTE)
 

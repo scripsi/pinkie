@@ -4,7 +4,7 @@ from configparser import ConfigParser
 ini = ConfigParser()
 
 # Inky Impression Parameters
-PALETTE = [57, 48, 57, 255, 255, 255, 58, 91, 70, 61, 59, 94, 156, 72, 75, 208, 190, 71,77, 106, 73, 255, 255, 255]
+PALETTE = [57, 48, 57, 255, 255, 255, 58, 91, 70, 61, 59, 94, 156, 72, 75, 208, 190, 71, 208, 106, 73, 255, 255, 255]
 BLACK = 0
 WHITE = 1
 GREEN = 2
