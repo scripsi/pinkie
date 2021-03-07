@@ -50,9 +50,15 @@ def show_clean():
     screen_test.update_blank(config.CLEAN)
     inky.set_image(screen_test.get_image())
     inky.show()
+    screen_test.update_blank(next(colours_iter))
+    inky.set_image(screen_test.get_image())
+    inky.show()
 
 def show_white():
     screen_test.update_blank(config.WHITE)
+    inky.set_image(screen_test.get_image())
+    inky.show()
+    screen_test.update_blank(next(colours_iter))
     inky.set_image(screen_test.get_image())
     inky.show()
 

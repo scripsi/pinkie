@@ -57,7 +57,6 @@ def update_blank(fill_colour):
     img_draw.rectangle([0,0,config.WIDTH,config.HEIGHT],fill=config.BLACK)
     dx = math.floor((config.WIDTH - 40)/8)
     dy = math.floor((config.HEIGHT - 40)/8)
-    print(dc)
     i = dc[fill_colour]
     img_draw.text([1,1],i,font=info_font,fill=config.WHITE)
     img_draw.text([1,config.HEIGHT-19],i,font=info_font,fill=config.WHITE)
