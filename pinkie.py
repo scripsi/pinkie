@@ -43,6 +43,7 @@ button_c.when_released = show_default
 button_d.when_released = show_default
 
 config.setup()
+config.dbg("Debugging enabled!")
 screen_default.setup()
 show_default()
 schedule.every(int(config.ini['screen_default']['refresh_interval'])).minutes.do(show_default)

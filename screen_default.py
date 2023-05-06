@@ -44,13 +44,15 @@ quacks = []
 def setup():
     """Initialises values
     """
-
+    config.dbg("screen_default: setup")
     try:
         # establish imap connection
-        imap = imaplib.IMAP4(config.ini['screen_default']['server'])
+        config.dbg("screen_default: connecting to IMAP...")
+        imap = imaplib.IMAP4_SSL(config.ini['screen_default']['server'])
         imap.login(config.ini['screen_default']['user'],
                    config.ini['screen_default']['password'])
         imap.select('Inbox',readonly=True)
+        config.dbg("screen_default: connection established")
 
         # print("Downloading quacks ...")
         for sender in config.ini['screen_default']['allowlist'].split(','):
@@ -66,6 +68,7 @@ def setup():
         imap.logout()
         # print("... completed")
     except:
+        config.dbg("screen_default: Could not download quacks!")
         quacks.append("No Quacks")
 
     # print(quacks)

@@ -23,3 +23,9 @@ def setup():
     """
     ini_file = os.path.expanduser("~") + "/pinkie.ini"
     ini.read(ini_file)
+
+def dbg(dbg_message):
+    """Show a debug message if enabled
+    """
+    if ini['default']['debug']:
+        print(dbg_message)
